@@ -59,7 +59,8 @@
             </nav>
             
             <div id="sidebar">
-                <iframe width="900" height="506" src="https://www.youtube.com/embed/0Rb8NUE_hnE" title="360 Video VR SHARK ROLLER COASTER" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="900" height="506" src="https://www.youtube.com/embed/jcvI-MAWc2U" title="Veer Penthouse Unit 3502 - 360° VR Video Tour" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <!-- <iframe width="900" height="506" src="https://www.youtube.com/embed/0Rb8NUE_hnE" title="360 Video VR SHARK ROLLER COASTER" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
             </div>
             
             <footer>
