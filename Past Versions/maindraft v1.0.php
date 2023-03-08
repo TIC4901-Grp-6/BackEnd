@@ -127,7 +127,7 @@
 
               <div id = "VideoEdit" class="tabcontentForm">
                 <form class="form-container">
-                  <iframe src="../Upload Function/upload.php"></iframe>
+                  <iframe src="../Upload Youtube/youtube_upload.php"></iframe>
                 </form>
               </div>
 
