@@ -14,8 +14,10 @@
         curl_setopt($ch, CURLOPT_URL, "https://data.gov.sg/api/action/datastore_search?resource_id=52e93430-01b7-4de0-80df-bc83d0afed40&limit=1");
         // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        
         $data = curl_exec($ch);
         var_dump(curl_getinfo($ch))  . '<br/>';
         echo '<br/><br/>';
