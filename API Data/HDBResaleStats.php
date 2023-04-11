@@ -9,12 +9,11 @@
 <body>
     <?php
 
+        //Connecting to Database
         $servername = "localhost";
         $username = "root";
         $password = "mysql";
         $database = "hdbinfo";
-
-        //Connecting to Database
         $db = mysqli_connect($servername, $username, $password, $database);
         
         $datapage = 0;
@@ -58,6 +57,8 @@
             }
             $datapage += 100;
         }
+
+        $db->close();
     ?>
 </body>
 </html>
