@@ -24,9 +24,10 @@
         $username = "root";
         $password = "mysql";
         $database = "privateproperty";
+        $tablename = "uraprpt";
         $db = mysqli_connect($servername, $username, $password, $database);
 
-        $sql = "delete from uraprpt";
+        $sql = "delete from " .$tablename;
         mysqli_query($db, $sql);
 
         //Loop for each batch/district sections. 1=1-7, 2=8-14, 3=15-21, 4=22-28
@@ -52,11 +53,11 @@
             echo "<br/><br/>";
             $json_data = json_decode($data,true);
             $selective = $json_data['Result'];
-            transferdata($selective, $db);
+            transferdata($selective, $db, $tablename);
             unset($json_data);
             unset($selective);
         }
-        function transferdata($selective, $db){
+        function transferdata($selective, $db, $tablename){
             if (empty($selective)){
                 echo "No Data Found";
                 return;
@@ -83,7 +84,7 @@
                             // echo $PPdata[8]. ', ';
                             // echo $PPdata[9]. ', ';
                             // echo $PPdata[10]. '<br/>';
-                            $sql = "INSERT INTO uraprpt (district, project, marketSegment, street, contractdate, 
+                            $sql = "INSERT INTO " .$tablename. " (district, project, marketSegment, street, contractdate, 
                             area, price, propertytype, tenure, floorange, typeofsale, noOfUnits) 
                             VALUES ('$PPdata[0]', '$PPdata[1]', '$PPdata[2]', '$PPdata[3]', '$PPdata[4]', '$PPdata[5]', 
                             '$PPdata[6]', '$PPdata[7]', '$PPdata[8]', '$PPdata[9]', '$PPdata[10]', '$PPdata[11]')";
