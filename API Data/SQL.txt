@@ -1,0 +1,52 @@
+create database privateproperty	
+
+*Median rental for private properties*
+create table uramedianrental (
+district int,
+project varchar(255),
+street varchar(255),
+median float,
+refPeriod varchar(255)
+);
+
+*Upcoming private projects*
+create table urapipelineproj (
+district int,
+project varchar(255),
+street varchar(255),
+developerName varchar(255),
+expectedTOPYear varchar(255),
+noOfApartment int,
+noOfSemiDetached int,
+noOfDetachedHouse int,
+noOfTerrace int,
+noOfCondo int,
+totalUnits int
+);
+
+*Private Residential Property Transactions*
+create table uraprpt (
+district int,
+project varchar(255),
+marketSegment varchar(255),
+street varchar(255),
+contractdate varchar(255),
+area float,
+price int,
+propertytype varchar(255),
+tenure varchar(255),
+floorange varchar(255),
+typeofsale varchar(255),
+noOfUnits int
+);
+
+*Private Residential Properties Rental Contract*
+create table urarentalstats (
+district int,
+project varchar(255),
+street varchar(255),
+areaSqft varchar(255),
+leaseDate varchar(255),
+propertyType varchar(255),
+rent float
+);

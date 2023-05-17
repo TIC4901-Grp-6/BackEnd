@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main v2.0.css">
     <title>Agent Page</title>
 </head>
 <body>
@@ -32,67 +32,98 @@
             <button class="tablinks" onclick="openView(event, 'Imageview')" id = "defaultOpen">Images</button>
             <button class="tablinks" onclick="openView(event, 'Videoview')">VR View</button>
             <button onclick="openEdit()">Edit Listing</button>
-            <!-- <button><a href="./Upload Function/pic_upload_index.php">Edit Listing</a></button> -->
           </div>
 
-          <!-- Picture View -->
+          <!-- Edit Property Details -->
+          <div>
+            Hola Amnigos
+          </div>
+
+          <!-- Edit Picture View -->
           <div id="Imageview" class="tabcontent">
             <div class ="container">
-              <div class="mySlides">
-                  <img src="./images/PP1.JPG" >
-              </div>
+
+              <?php
+                $servername = "localhost";
+                $username = "root";
+                $password = "mysql";
+                $database = "uploadimage";
             
-              <div class="mySlides">
-                  <img src="./images/PP2.JPG" >
-              </div>
+                $db = mysqli_connect($servername, $username, $password, $database);
             
-              <div class="mySlides">
-                  <img src="./images/PP3.JPG" >
-              </div>
-            
-              <div class="mySlides">
-                  <img src="./images/PP1.JPG" >
-              </div>
-            
-              <div class="mySlides">
-                  <img src="./images/PP2.JPG" >
-              </div>
-            
-              <div class="mySlides">
-                  <img src="./images/PP3.JPG" >
-              </div>
+                $query = " select * from image ";
+                $result = mysqli_query($db, $query);
+
+                if(isset($displayErrMessage))
+                {
+                ?>
+                  <div class="alert alert-danger">
+                    <?php 
+                      echo $displayErrMessage;
+                      unset($displayErrMessage);
+                    ?>
+                  </div>
+                <?php 
+                } else {
+                  while ($data = mysqli_fetch_assoc($result)) {
+                    ?>
+                      <div class="mySlides">
+                        <img src="./Upload Function/pic_upload/image/<?php echo $data['filename']; ?>" >
+                      </div>   
+                <?php
+                  }
+                }
+              ?>
             
               <!-- Next and previous buttons -->
               <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
               <a class="next" onclick="plusSlides(1)">&#10095;</a>
             
               <!-- Thumbnail images -->
-              <div class="row">
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP1.JPG" onclick="currentSlide(1)">
-                </div>
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP2.JPG" onclick="currentSlide(2)">
-                </div>
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP3.JPG" onclick="currentSlide(3)">
-                </div>
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP1.JPG" onclick="currentSlide(4)">
-                </div>
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP2.JPG" onclick="currentSlide(5)">
-                </div>
-                <div class="column">
-                  <img class="demo cursor" src="./images/PP3.JPG" onclick="currentSlide(6)">
-                </div>
-              </div>
+                <?php
+                  $servername = "localhost";
+                  $username = "root";
+                  $password = "mysql";
+                  $database = "uploadimage";
+              
+                  $db = mysqli_connect($servername, $username, $password, $database);
+              
+                  $query = " select * from image ";
+                  $result = mysqli_query($db, $query);
 
-
+                  if(isset($displayErrMessage))
+                  {
+                  ?>
+                    <div class="alert alert-danger">
+                      <?php 
+                        echo $displayErrMessage;
+                        unset($displayErrMessage);
+                      ?>
+                    </div>
+                  <?php 
+                  } else {
+                  ?>
+                  <div class="row">
+                    <?php  
+                      $counter = 1;
+                      while ($data = mysqli_fetch_assoc($result)) {
+                    ?>
+                          <div class="column">
+                            <img class="demo cursor" src="./Upload Function/pic_upload/image/<?php echo $data['filename']; ?>" 
+                            onclick="currentSlide(<?php echo $counter; ?>)">
+                          </div>   
+                    <?php
+                      $counter ++;
+                      }
+                    ?>
+                  </div>
+                  <?php
+                  }
+                ?>
               
             </div>
 
-            <!-- To scroll Images -->
+          <!-- To scroll Images -->
           <script>
             let slideIndex = 1;
             showSlides(slideIndex);
@@ -120,8 +151,8 @@
               slides[slideIndex-1].style.display = "block";
               dots[slideIndex-1].className += " active";
             }
-          </script>
-        </div>
+            </script>
+          </div>
 
           <!-- VR Video Tab -->
           <div id="Videoview" class="tabcontent">
