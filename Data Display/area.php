@@ -2,12 +2,14 @@
 // Connect to the database
 $servername = "localhost";
 $username = "root";
-$password = "TIC2601";
+$password = "mysql";
 $dbname = "mapfunction";
-$dbname_p = "privateproperty";
+$dbname_old_property = "privateproperty";
+$dbname_new_property = "properties";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-$conn_p = new mysqli($servername, $username, $password, $dbname_p);
+$conn_old_property = new mysqli($servername, $username, $password, $dbname_old_property);
+$conn_new_property = new mysqli($servername, $username, $password, $dbname_new_property);
 
 // Check connection
 if ($conn->connect_error) {
@@ -106,35 +108,72 @@ switch($id){
 				break;
 			
 			}
-if($id >0){
-	   $sql = "SELECT flat_type, town, storey_range, floor_area_sqm, lease_commencement_date, resale_price FROM hdb_resale_data WHERE town in ".$area;
-	   $result = mysqli_query($conn,$sql);
-       $chart_data="";
-       while ($row = mysqli_fetch_array($result)) { 
- 
-            $Town[]  = $row['town']  ;
-            $Lease[] = $row['lease_commencement_date'];
-			$Price[] = $row['resale_price'];
-			$list = join(',', $Town);
-		    //$string = join(',', $Lease);
-		    //$infos = join(',', $Price);
-        }
-		//echo $list;
-		//echo $string;
-		//echo $infos;
 
-	   $sql_private = "SELECT propertytype, street, floorange, area, contractdate, price FROM uraprpt WHERE district = " .$id;
-	   $result_private = mysqli_query($conn_p,$sql_private);
-       while ($row_private = mysqli_fetch_array($result_private)) { 
- 
-            $Town[]  = $row_private['street'];
-            $Price[] = $row_private['price'];
-			//$list_private = join(',', $street);
-		    //$string_private = join(',', $Price);
-        }
-		//echo $list_private;
-		//echo $string_private;
-		//echo $infos;
+if($id >0){
+	#KW's part
+	$sql_sales = "SELECT ProjectName, Town, FloorArea, Price FROM properties WHERE town in ".$area;
+	$result_sales = mysqli_query($conn_new_property,$sql_sales);
+	while ($row_sales = mysqli_fetch_array($result_sales)){
+		$result[] = $row_sales;
+	}
+
+	if ($result > 0){
+		// Start the HTML table
+		echo '<table>';
+
+		// Add table headers
+		echo '<tr>';
+		echo '<th>Project Name</th>';
+		echo '<th>Town</th>';
+		echo '<th>Floor Area Type</th>';
+		echo '<th>Price</th>';
+		echo '</tr>';
+
+		foreach ($result as $row) {
+			echo '<tr>';
+			echo '<td>' . $row['ProjectName'] . '</td>';
+			echo '<td>' . $row['Town'] . '</td>';
+			echo '<td>' . $row['FloorArea'] . '</td>';
+			echo '<td>' . $row['Price'] . '</td>';
+			echo '</tr>';
+		}
+		
+		// End the HTML table
+		echo '</table>';
+	}
+	else {
+		echo "No results found.";
+	}
+
+	#QM's part
+	$sql_resale = "SELECT flat_type, town, storey_range, floor_area_sqm, lease_commencement_date, resale_price FROM hdb_resale_data WHERE town in ".$area;
+	$result_resale = mysqli_query($conn,$sql_resale);
+	$chart_data="";
+	while ($row_resale = mysqli_fetch_array($result_resale)) { 
+
+		 $Town[]  = $row_resale['town']  ;
+		 $Lease[] = $row_resale['lease_commencement_date'];
+		 $Price[] = $row_resale['resale_price'];
+		 $list = join(',', $Town);
+		 //$string = join(',', $Lease);
+		 //$infos = join(',', $Price);
+	 }
+	 //echo $list;
+	 //echo $string;
+	 //echo $infos;
+
+	$sql_private = "SELECT propertytype, street, floorange, area, contractdate, price FROM uraprpt WHERE district = " .$id;
+	$result_private = mysqli_query($conn_old_property,$sql_private);
+	while ($row_private = mysqli_fetch_array($result_private)) { 
+
+		 $Town[]  = $row_private['street'];
+		 $Price[] = $row_private['price'];
+		 //$list_private = join(',', $street);
+		 //$string_private = join(',', $Price);
+	 }
+	 //echo $list_private;
+	 //echo $string_private;
+	 //echo $infos;
 ?>
 
   
@@ -157,7 +196,7 @@ if($id >0){
     </head>
     <body>
         <div style="width:80%;hieght:20%;text-align:center">
-            <h2 class="page-header" >Resale Price for HDB</h2>
+            <h2 class="page-header" >Past Resale Price of selected District</h2>
             <canvas  id="chartjs_bar"></canvas> 
         </div>    
     </body>
@@ -193,13 +232,13 @@ if($id >0){
 
 
 <?php	
-		$rows = array();
+		$rows_resale = array();
 		//print_r($query);
-		//$resultarray = mysqli_query($conn,$sql);
-		$resultarray=mysqli_prepare($conn,$sql);
-		mysqli_stmt_execute($resultarray);		//execute the statement
-		mysqli_stmt_bind_result($resultarray,$flattype,$street,$storey,$floor,$lease,$resaleprice);
-		while(mysqli_stmt_fetch($resultarray))										//it fetch one by one, this one to load column name of database
+		//$resultarray = mysqli_query($conn,$sql_resale);
+		$resultarray_resale=mysqli_prepare($conn,$sql_resale);
+		mysqli_stmt_execute($resultarray_resale);		//execute the statement
+		mysqli_stmt_bind_result($resultarray_resale,$flattype,$street,$storey,$floor,$lease,$resaleprice);
+		while(mysqli_stmt_fetch($resultarray_resale))			//it fetch one by one, this one to load column name of database
 		{ 
 			echo "<td>" . $flattype . "</td>";
 			echo "<td>" . $street . "</td>";
@@ -212,10 +251,10 @@ if($id >0){
 		$rows_private = array();
 		//print_r($query);
 		//$resultarray = mysqli_query($conn,$sql);
-		$resultarray_private=mysqli_prepare($conn_p,$sql_private);
+		$resultarray_private=mysqli_prepare($conn_old_property,$sql_private);
 		mysqli_stmt_execute($resultarray_private);			//execute the statement
 		mysqli_stmt_bind_result($resultarray_private,$propertytype,$street,$floorange,$area,$contractdate,$price);
-		while(mysqli_stmt_fetch($resultarray_private))										//it fetch one by one, this one to load column name of database
+		while(mysqli_stmt_fetch($resultarray_private))		//it fetch one by one, this one to load column name of database
 		{ 
 			echo "<td>" . $propertytype . "</td>";
 			echo "<td>" . $street . "</td>";		
@@ -228,8 +267,8 @@ if($id >0){
          $error = "No data found";
          echo "<script type='text/javascript'>alert('$error');</script>";
       }
-$result = $conn->query($sql);
-$result_private = $conn->query($sql_private);
+$result_resale = $conn->query($sql_resale);
+$result_private = $conn_old_property->query($sql_private);
 
 ?>
 
